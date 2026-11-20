@@ -36,15 +36,13 @@ ol{padding-left:18px;margin:0;color:var(--mut)}ol li{margin-bottom:6px}
 footer{text-align:center;color:var(--mut);font-size:12px;padding:8px 16px 28px}
 #adm{position:fixed;inset:0;max-width:430px;margin:0 auto;background:var(--bg);z-index:20;display:flex;flex-direction:column;padding-top:env(safe-area-inset-top,0px)}
 #adm[hidden]{display:none}
-#msgs{flex:1;overflow:auto;padding:12px}
-.m{white-space:pre-wrap;padding:10px 12px;border-radius:12px;margin-bottom:8px;max-width:90%;font-size:13px}
-.m.me{background:#2a1a0d;margin-left:auto}.m.bot{background:var(--card);border:1px solid var(--line)}
-#ab{display:flex;gap:8px;padding:10px;border-top:1px solid var(--line);align-items:flex-end;padding-bottom:calc(10px + env(safe-area-inset-bottom,0px))}
-#ab textarea{min-height:46px;max-height:140px}#ab button{width:46px;height:46px;border:0;border-radius:12px;background:var(--ac);font-size:18px}
-#ab .at{background:var(--card);border:1px solid var(--line)}
+.ah{display:flex;justify-content:space-between;align-items:center;padding:12px 16px;border-bottom:1px solid var(--line)}.ah .btn{width:auto;margin:0;padding:6px 12px}
+.ab{flex:1;overflow:auto;padding:14px 14px 40px}
+.chip{display:inline-block;padding:9px 13px;border:1px solid var(--line);border-radius:999px;margin:0 6px 8px 0;background:#121214;cursor:pointer;font-size:13px;user-select:none}.chip.on{border-color:var(--ac);background:#2a1a0d;color:var(--ac);font-weight:700}
+.toast{border-radius:10px;padding:10px 12px;font-size:13px;margin-top:4px;white-space:pre-wrap}.toast.ok{background:#10281d;color:var(--ok)}.toast.bad{background:#2d1414;color:#ff8a8a}
 </style></head>
 <body>
-<header><div class="logo" id="lg">🔧</div><div><b>AfterWork Garage</b><small>Servis motor, rapi sepulang kerja</small></div></header>
+<header><div class="logo" id="lg">🏍️</div><div><b>AfterWork Garage</b><small>Servis motor, rapi sepulang kerja</small></div></header>
 <div class="pad">
 <div class="card hero"><h2>Cek status motor kamu</h2><p class="sub">Masukkan plat nomor, lihat riwayat servis seperti melacak paket.</p>
 <input id="plat" placeholder="B 1234 XYZ" autocomplete="off"><button class="btn" id="cek">Lacak motor</button></div>
@@ -102,37 +100,63 @@ $("#daftar").onclick=()=>{
 };
 
 /* ---------- ADMIN: buka dengan #admin di URL atau ketuk logo 5x ---------- */
-let photo="",taps=0,pin="";
+let photo="",taps=0,pin="",am=null,ast=null;const asel=new Set();
 $("#lg").onclick=()=>{if(++taps>=5){taps=0;openAdm()}setTimeout(()=>taps=0,2500)};
 if(location.hash==="#admin")openAdm();
-const HELP=`Perintah admin:\n\n/daftar B 1234 XYZ\nTipe: Beat Esp\nTahun: 2016\nKM: 15200\nServis: Oil change\nCatatan: oli Yamalube\n\n/update B 1234 XYZ\nStatus: Dikerjakan\nServis: Cleaning CVT\nKM: 16000\n\nStatus: Menunggu, Dikerjakan, Selesai, Diambil.\nFoto: tekan 📎 lalu kirim perintah.\n/cek B1234XYZ · /hapus B1234XYZ · /bantuan`;
 function openAdm(){
   pin=sessionStorage.getItem("pin")||prompt("PIN admin")||"";
   if(!pin)return;
   sessionStorage.setItem("pin",pin);
   const a=$("#adm");a.hidden=false;
-  a.innerHTML=`<div style="display:flex;justify-content:space-between;align-items:center;padding:12px 16px;border-bottom:1px solid var(--line)"><b>Admin AfterWork</b><button class="btn ghost" id="ax" style="width:auto;margin:0;padding:6px 12px">Tutup</button></div><div id="msgs"></div><div id="ab"><button class="at" id="atb">📎</button><input type="file" id="fl" accept="image/*" hidden><textarea id="in" rows="1" placeholder="/daftar ..."></textarea><button id="sd">➤</button></div>`;
+  a.innerHTML=`<div class="ah"><b>🔧 Admin AfterWork</b><button class="btn ghost" id="ax">Tutup</button></div>
+  <div class="ab"><div class="card"><h2>Plat nomor</h2><p class="sub">Ketik plat. Kalau sudah ada, data muncul untuk di-update. Kalau belum, isi data motor baru.</p><input id="ap" placeholder="B 1234 XYZ" style="text-transform:uppercase;text-align:center;font-weight:700;letter-spacing:2px"><button class="btn" id="af">Cari / Tambah motor</button></div>
+  <div id="aform"></div><div id="atoast"></div></div>`;
   $("#ax").onclick=()=>{a.hidden=true;lookup()};
-  say(HELP);
-  $("#atb").onclick=()=>$("#fl").click();
-  $("#fl").onchange=e=>{const f=e.target.files[0];if(!f)return;const im=new Image();im.onload=()=>{const s=480/Math.max(im.width,im.height,480),c=document.createElement("canvas");c.width=im.width*s;c.height=im.height*s;c.getContext("2d").drawImage(im,0,0,c.width,c.height);photo=c.toDataURL("image/jpeg",.7);say("📎 Foto siap, kirim perintah /daftar atau /update.")};im.src=URL.createObjectURL(f)};
-  $("#sd").onclick=()=>{const v=$("#in").value.trim();if(!v)return;$("#in").value="";say(v,"me");run(v)};
+  $("#af").onclick=afind;
+  $("#ap").onkeydown=e=>{if(e.key==="Enter")afind()};
 }
-function say(t,w="bot"){const d=document.createElement("div");d.className="m "+w;d.textContent=t;$("#msgs").appendChild(d);$("#msgs").scrollTop=1e9}
-const alias=k=>k.startsWith("tipe")?"tipe":k.startsWith("tahun")?"tahun":k.startsWith("km")?"km":(k.startsWith("riwayat")||k.startsWith("servis"))?"servis":k.startsWith("plat")?"plat":k.startsWith("status")?"status":k.startsWith("catatan")?"catatan":(k.startsWith("tgl")||k.startsWith("tanggal"))?"tgl":k;
-async function run(txt){
-  const L=txt.split("\n"),h=L[0].match(/^\/(\w+)\s*(.*)$/);
-  if(!h)return say("Perintah harus diawali /daftar, /update, /cek, /hapus atau /bantuan");
-  const cmd=h[1].toLowerCase(),f={};
-  if(cmd==="bantuan")return say(HELP);
-  L.slice(1).forEach(l=>{const i=l.indexOf(":");if(i>0)f[alias(l.slice(0,i).trim().toLowerCase())]=l.slice(i+1).trim()});
-  const plat=f.plat||h[2];if(!norm(plat))return say("Plat nomor belum ada. Contoh: /daftar B 1234 XYZ");
-  say("Memproses…");
+function toast(t,ok){const e=$("#atoast");e.className="toast "+(ok?"ok":"bad");e.textContent=t;e.scrollIntoView({block:"nearest"})}
+async function afind(){
+  const k=norm($("#ap").value);if(!k)return toast("Isi plat nomor dulu.");
+  photo="";ast=null;asel.clear();am=null;
+  $("#aform").innerHTML=`<div class="card sub">Mencari…</div>`;
+  let j=null;try{j=await (await fetch(API+"?plat="+encodeURIComponent(k))).json()}catch(e){$("#aform").innerHTML="";return toast("Gagal menghubungi server.")}
+  am=j&&j.ok?j.motor:null;
+  if(am)ast=am.status;else ast=0;
+  const rw=am?[...(j.riwayat||[])].reverse().slice(0,3):[];
+  $("#aform").innerHTML=`<div class="card"><h2>${am?"✏️ Update "+esc(am.plat):"➕ Motor baru "+esc(fmt(k))}</h2>
+  ${am?`<p class="sub">Servis terakhir: ${rw.length?esc(rw[0].s)+" ("+tgl(rw[0].t)+")":"belum ada"} · KM ${am.km||"-"}</p>`:""}
+  <div id="aimg">${am&&am.foto?`<img class="photo" src="${esc(am.foto)}" alt="">`:""}</div>
+  <button class="btn ghost" id="apb">📷 ${am?"Ganti foto motor":"Pilih foto motor"}</button><input type="file" id="afl" accept="image/*" hidden>
+  <div class="row" style="margin-top:12px"><div><small class="sub">Tipe motor</small><input id="fti" placeholder="Beat Esp" value="${am?esc(am.tipe):""}"></div><div><small class="sub">Tahun</small><input id="fth" inputmode="numeric" placeholder="2016" value="${am?esc(am.tahun):""}"></div></div>
+  <small class="sub" style="display:block;margin-top:12px">Status</small><div id="astp">${STEPS.map((s,i)=>`<span class="chip ${i===ast?"on":""}" data-i="${i}">${s}</span>`).join("")}</div>
+  <small class="sub" style="display:block">Servis yang dikerjakan (boleh lebih dari satu)</small><div id="asv">${SVC.map(s=>`<span class="chip" data-n="${s[0]}">${s[0]}</span>`).join("")}</div>
+  <input id="flain" placeholder="Servis lain (opsional)">
+  <div class="row" style="margin-top:12px"><div><small class="sub">KM servis ini</small><input id="fkm" inputmode="numeric" placeholder="${am&&am.km?am.km:"15200"}"></div><div><small class="sub">Tanggal</small><input type="date" id="ftg" value="${new Date().toISOString().slice(0,10)}"></div></div>
+  <input id="fct" placeholder="Catatan (opsional)" style="margin-top:8px">
+  <button class="btn" id="asv2">💾 ${am?"Simpan perubahan":"Daftarkan motor"}</button>
+  ${am?`<button class="btn ghost" id="adel" style="color:#ff6b6b">🗑️ Hapus motor ini</button>`:""}</div>`;
+  $("#apb").onclick=()=>$("#afl").click();
+  $("#afl").onchange=e=>{const f=e.target.files[0];if(!f)return;const im=new Image();im.onload=()=>{const s=480/Math.max(im.width,im.height,480),c=document.createElement("canvas");c.width=im.width*s;c.height=im.height*s;c.getContext("2d").drawImage(im,0,0,c.width,c.height);photo=c.toDataURL("image/jpeg",.7);$("#aimg").innerHTML=`<img class="photo" src="${photo}" alt="">`};im.src=URL.createObjectURL(f)};
+  $("#astp").onclick=e=>{const c=e.target.closest(".chip");if(!c)return;ast=+c.dataset.i;document.querySelectorAll("#astp .chip").forEach(x=>x.classList.toggle("on",x===c))};
+  $("#asv").onclick=e=>{const c=e.target.closest(".chip");if(!c)return;const n=c.dataset.n;asel.has(n)?asel.delete(n):asel.add(n);c.classList.toggle("on")};
+  $("#asv2").onclick=()=>asave(k);
+  if(am)$("#adel").onclick=()=>{if(confirm("Hapus "+am.plat+"? Riwayat tetap ada di tab riwayat Sheet."))apost(k,"hapus",{},"")};
+}
+function asave(k){
+  const v=id=>$(id).value.trim();
+  const f={tipe:v("#fti"),tahun:v("#fth"),km:v("#fkm"),catatan:v("#fct"),tgl:$("#ftg").value,status:ast==null?"":STEPS[ast]};
+  const sv=[...asel,v("#flain")].filter(Boolean).join(", ");if(sv)f.servis=sv;
+  if(!am&&!f.tipe)return toast("Tipe motor wajib diisi.");
+  apost(k,am?"update":"daftar",f,photo);
+}
+async function apost(k,cmd,f,foto){
+  toast("Menyimpan…",true);
   try{
-    const r=await (await fetch(API,{method:"POST",body:JSON.stringify({pin,cmd,plat,f,foto:(cmd==="daftar"||cmd==="update")?photo:""})})).json();
-    say(r.msg||"Selesai.");
-    if(r.ok)photo="";
-    if(r.msg==="PIN salah."){sessionStorage.removeItem("pin")}
-  }catch(e){say("Gagal menghubungi server. Cek URL Apps Script dan koneksi.")}
+    const r=await (await fetch(API,{method:"POST",body:JSON.stringify({pin,cmd,plat:k,f,foto})})).json();
+    toast(r.msg||"Selesai.",r.ok);
+    if(r.msg==="PIN salah.")sessionStorage.removeItem("pin");
+    if(r.ok){if(cmd==="hapus")$("#aform").innerHTML="";else{await afind();toast(r.msg,true)}}
+  }catch(e){toast("Gagal menghubungi server. Cek URL Apps Script dan koneksi.")}
 }
 </script></body></html>
