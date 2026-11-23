@@ -1,162 +1,340 @@
 <!doctype html>
-<html lang="id"><head><meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>AfterWork Garage</title>
-<style>
-:root{--bg:#121214;--card:#1c1c20;--line:#2b2b31;--tx:#f4f1ea;--mut:#9b99a3;--ac:#ff7a1a;--ok:#3ecf8e;color-scheme:dark;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
-html{background:#000}*{box-sizing:border-box}
-body{margin:0 auto;max-width:430px;min-height:100vh;background:var(--bg);color:var(--tx);font:15px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
-.pad{padding:16px}
-header{display:flex;align-items:center;gap:10px;padding:16px;border-bottom:1px solid var(--line)}
-.logo{width:40px;height:40px;border-radius:10px;background:var(--ac);display:grid;place-items:center;font-size:22px;cursor:pointer;user-select:none}
-header b{display:block;font-size:17px}header small{color:var(--mut)}
-h2{font-size:16px;margin:0 0 4px}.sub{color:var(--mut);font-size:13px;margin:0 0 12px}
-.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;margin-bottom:14px}
-.hero{background:linear-gradient(160deg,#2a1a0d,#1c1c20 60%);border-color:#4a2b12}
-input,select,textarea{width:100%;background:#121214;color:var(--tx);border:1px solid var(--line);border-radius:10px;padding:12px;font:inherit}
-input#plat{font-size:20px;font-weight:700;letter-spacing:2px;text-transform:uppercase;text-align:center}
-.btn{display:block;width:100%;border:0;border-radius:12px;padding:13px;font:inherit;font-weight:700;background:var(--ac);color:#1a0c00;text-align:center;text-decoration:none;cursor:pointer;margin-top:10px}
-.btn.wa{background:#25d366;color:#05230f}.btn.ghost{background:transparent;color:var(--tx);border:1px solid var(--line)}
-.svc{display:flex;gap:12px;align-items:center;padding:12px;border:1px solid var(--line);border-radius:12px;margin-bottom:8px;cursor:pointer;background:#121214}
-.svc.on{border-color:var(--ac);background:#2a1a0d}.svc i{font-style:normal;font-size:24px}
-.svc b{display:block}.svc span{color:var(--mut);font-size:12px}.chk{margin-left:auto;width:22px;height:22px;border-radius:50%;border:2px solid var(--line);display:grid;place-items:center;font-size:13px;flex:none}
-.svc.on .chk{background:var(--ac);border-color:var(--ac);color:#1a0c00}
-.row{display:flex;gap:8px}.row>*{flex:1}
-.photo{width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:12px;background:#121214;display:grid;place-items:center;font-size:54px;border:1px solid var(--line)}
-.plate{display:inline-block;background:#f4f1ea;color:#111;font-weight:800;letter-spacing:2px;padding:4px 12px;border-radius:6px;font-size:20px;margin:12px 0 4px}
-.kv{display:flex;gap:8px;margin-top:10px}.kv div{flex:1;background:#121214;border:1px solid var(--line);border-radius:10px;padding:8px 10px}.kv small{color:var(--mut);display:block;font-size:11px}
-.trk{display:flex;margin:16px 0 6px}.trk div{flex:1;text-align:center;font-size:11px;color:var(--mut);position:relative}
-.trk div::before{content:"";display:block;width:18px;height:18px;border-radius:50%;background:var(--line);margin:0 auto 4px;position:relative;z-index:1}
-.trk div::after{content:"";position:absolute;top:8px;left:-50%;width:100%;height:2px;background:var(--line)}.trk div:first-child::after{display:none}
-.trk .d{color:var(--tx)}.trk .d::before,.trk .d::after{background:var(--ac)}.trk .c::before{box-shadow:0 0 0 4px #ff7a1a40}
-.tl{border-left:2px solid var(--line);margin:10px 0 0 6px;padding-left:14px}.tl div{position:relative;margin-bottom:12px}
-.tl div::before{content:"";position:absolute;left:-21px;top:5px;width:10px;height:10px;border-radius:50%;background:var(--ac)}
-.tl small{color:var(--mut)}.empty{text-align:center;padding:6px 0}
-ol{padding-left:18px;margin:0;color:var(--mut)}ol li{margin-bottom:6px}
-footer{text-align:center;color:var(--mut);font-size:12px;padding:8px 16px 28px}
-#adm{position:fixed;inset:0;max-width:430px;margin:0 auto;background:var(--bg);z-index:20;display:flex;flex-direction:column;padding-top:env(safe-area-inset-top,0px)}
-#adm[hidden]{display:none}
-.ah{display:flex;justify-content:space-between;align-items:center;padding:12px 16px;border-bottom:1px solid var(--line)}.ah .btn{width:auto;margin:0;padding:6px 12px}
-.ab{flex:1;overflow:auto;padding:14px 14px 40px}
-.chip{display:inline-block;padding:9px 13px;border:1px solid var(--line);border-radius:999px;margin:0 6px 8px 0;background:#121214;cursor:pointer;font-size:13px;user-select:none}.chip.on{border-color:var(--ac);background:#2a1a0d;color:var(--ac);font-weight:700}
-.toast{border-radius:10px;padding:10px 12px;font-size:13px;margin-top:4px;white-space:pre-wrap}.toast.ok{background:#10281d;color:var(--ok)}.toast.bad{background:#2d1414;color:#ff8a8a}
-</style></head>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>AfterWork Garage - Lacak Dokumentasi Servis Motor</title>
+  <style>
+    :root {
+      --bg: #121214;
+      --card: #1c1c20;
+      --line: #2b2b31;
+      --tx: #f4f1ea;
+      --mut: #9b99a3;
+      --ac: #ff7a1a;
+      --ok: #3ecf8e;
+      color-scheme: dark;
+      box-sizing: border-box;
+      padding-top: env(safe-area-inset-top, 0px);
+      padding-bottom: env(safe-area-inset-bottom, 0px);
+    }
+    html { background: #000; }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0 auto;
+      max-width: 480px;
+      min-height: 100vh;
+      background: var(--bg);
+      color: var(--tx);
+      font: 15px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    }
+    .pad { padding: 16px; }
+    header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 16px;
+      border-bottom: 1px solid var(--line);
+    }
+    .logo {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      background: var(--ac);
+      display: grid;
+      place-items: center;
+      font-size: 22px;
+      user-select: none;
+      box-shadow: 0 4px 12px rgba(255, 122, 26, 0.25);
+    }
+    header b { display: block; font-size: 18px; }
+    header small { color: var(--mut); font-size: 12px; }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 18px;
+      margin-bottom: 16px;
+    }
+    .hero {
+      background: linear-gradient(160deg, #2a1a0d, #1c1c20 65%);
+      border-color: #4a2b12;
+    }
+    h2 { font-size: 17px; margin: 0 0 6px; }
+    .sub { color: var(--mut); font-size: 13px; margin: 0 0 14px; }
+
+    input#platInput {
+      width: 100%;
+      background: #121214;
+      color: var(--tx);
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 14px;
+      font-size: 22px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      text-align: center;
+      font-family: inherit;
+    }
+    input#platInput:focus {
+      outline: none;
+      border-color: var(--ac);
+    }
+
+    .btn {
+      display: block;
+      width: 100%;
+      border: 0;
+      border-radius: 12px;
+      padding: 14px;
+      font: inherit;
+      font-weight: 700;
+      background: var(--ac);
+      color: #1a0c00;
+      text-align: center;
+      text-decoration: none;
+      cursor: pointer;
+      margin-top: 12px;
+      transition: opacity 0.2s;
+    }
+    .btn:active { opacity: 0.85; }
+
+    .btn-pdf {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      width: 100%;
+      background: #2563eb;
+      color: #ffffff;
+      padding: 12px;
+      border-radius: 10px;
+      font-weight: 700;
+      font-size: 14px;
+      text-decoration: none;
+      margin-top: 10px;
+      border: none;
+      cursor: pointer;
+    }
+    .btn-pdf:hover { background: #1d4ed8; }
+
+    .plate-badge {
+      display: inline-block;
+      background: #f4f1ea;
+      color: #111;
+      font-weight: 800;
+      letter-spacing: 2px;
+      padding: 4px 12px;
+      border-radius: 6px;
+      font-size: 20px;
+      margin-bottom: 8px;
+    }
+
+    .history-item {
+      background: #121214;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 14px;
+      margin-top: 12px;
+    }
+    .history-item .tag {
+      display: inline-block;
+      background: #2a1a0d;
+      color: var(--ac);
+      border: 1px solid #4a2b12;
+      padding: 3px 8px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+    .history-item .date {
+      color: var(--mut);
+      font-size: 12px;
+    }
+    .history-item .note {
+      color: #d1d5db;
+      font-size: 13px;
+      margin-top: 6px;
+      white-space: pre-wrap;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 24px 12px;
+      color: var(--mut);
+    }
+    .empty-state .icon {
+      font-size: 44px;
+      margin-bottom: 8px;
+    }
+
+    footer {
+      text-align: center;
+      color: var(--mut);
+      font-size: 12px;
+      padding: 16px;
+      border-top: 1px solid var(--line);
+      margin-top: 20px;
+    }
+  </style>
+</head>
 <body>
-<header><div class="logo" id="lg">🏍️</div><div><b>AfterWork Garage</b><small>Servis motor, rapi sepulang kerja</small></div></header>
+
+<header>
+  <div class="logo">🏍️</div>
+  <div>
+    <b>AfterWork Garage</b>
+    <small>Cek Status &amp; Dokumentasi Servis Motor</small>
+  </div>
+</header>
+
 <div class="pad">
-<div class="card hero"><h2>Cek status motor kamu</h2><p class="sub">Masukkan plat nomor, lihat riwayat servis seperti melacak paket.</p>
-<input id="plat" placeholder="B 1234 XYZ" autocomplete="off"><button class="btn" id="cek">Lacak motor</button></div>
-<div id="res"></div>
-<div class="card"><h2>Layanan servis</h2><p class="sub">Pilih layanan lalu daftar. Konfirmasi janji temu lewat WhatsApp.</p><div id="svc"></div>
-<div class="row"><div><small class="sub">Tanggal</small><input type="date" id="tg"></div><div><small class="sub">Jam</small><select id="jm"><option>Sepulang kerja (17.00-19.00)</option><option>Pagi (08.00-11.00)</option><option>Siang (12.00-16.00)</option><option>Malam (19.00-21.00)</option></select></div></div>
-<div id="err" class="sub" style="color:#ff6b6b;margin:8px 0 0"></div>
-<button class="btn wa" id="daftar">Daftar via WhatsApp</button></div>
-<div class="card"><h2>Cara kerja</h2><ol><li>Pilih layanan dan klik daftar, WhatsApp terbuka dengan data terisi.</li><li>Kirim pesannya, kami konfirmasi antrian dan jam.</li><li>Pantau status motor di sini dengan plat nomor.</li></ol></div>
+  <div class="card hero">
+    <h2>Lacak Dokumentasi Motor</h2>
+    <p class="sub">Masukkan nomor plat motor untuk melihat riwayat servis &amp; mengunduh laporan PDF.</p>
+    <label for="platInput" style="display:none">Plat Nomor</label>
+    <input id="platInput" placeholder="B 1234 XYZ" autocomplete="off">
+    <button class="btn" id="btnCari">Cari Dokumentasi</button>
+  </div>
+
+  <div id="resultArea"></div>
 </div>
-<footer>© AfterWork Garage · WhatsApp 0857-7404-4929</footer>
-<div id="adm" hidden></div>
+
+<footer>© AfterWork Garage · Dokumentasi Servis Digital</footer>
+
 <script>
-const API="https://script.google.com/macros/s/AKfycbyXgSdtbB4H0nv0Ccs_kDU8f98uT5rg3tTZQO2bpWv3eOyG3VfmADOrBqJVvkbzZG-tAQ/exec"; // URL /exec dari Apps Script
-const WA="6285774044929";
-const SVC=[["Cleaning CVT","Tarikan halus, tidak jedug","🌀"],["Oil change","Ganti oli mesin berkala","🛢️"],["Cleaning Spul","Pengapian stabil, mesin tidak brebet","⚡"],["Cleaning Throttle Body","Gas lebih responsif, idle halus","💨"]];
-const STEPS=["Menunggu","Dikerjakan","Selesai","Diambil"];
-const $=s=>document.querySelector(s);
-const norm=s=>(s||"").toUpperCase().replace(/[^A-Z0-9]/g,"");
-const fmt=s=>{const n=norm(s),m=n.match(/^([A-Z]{1,2})(\d{1,4})([A-Z]{0,3})$/);return m?[m[1],m[2],m[3]].filter(Boolean).join(" "):n};
-const esc=s=>String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
-const wa=t=>"https://wa.me/"+WA+"?text="+encodeURIComponent(t);
-const tgl=t=>{const d=new Date(t);return isNaN(d)?t:d.toLocaleDateString("id-ID",{day:"numeric",month:"short",year:"numeric"})};
-const sel=new Set();let cur=null;
+  // URL Web App Google Apps Script Anda
+  const API_URL = "https://script.google.com/macros/s/AKfycbyV7DavSysWDsmQP1oZUiNhrnqthpQ0MLxiH0r9AvaTI7PpPnX-Xo3ymyqa5zXMpzEX/exec";
 
-$("#svc").innerHTML=SVC.map(([n,d,e])=>`<div class="svc" data-n="${n}"><i>${e}</i><div><b>${n}</b><span>${d}</span></div><div class="chk"></div></div>`).join("");
-$("#svc").onclick=e=>{const s=e.target.closest(".svc");if(!s)return;const n=s.dataset.n;sel.has(n)?sel.delete(n):sel.add(n);s.classList.toggle("on");s.querySelector(".chk").textContent=sel.has(n)?"✓":"";$("#err").textContent=""};
-$("#tg").min=new Date().toISOString().slice(0,10);
+  const platInput = document.getElementById("platInput");
+  const btnCari = document.getElementById("btnCari");
+  const resultArea = document.getElementById("resultArea");
 
-async function lookup(){
-  const k=norm($("#plat").value),r=$("#res");
-  if(!k){r.innerHTML="";cur=null;return}
-  r.innerHTML=`<div class="card empty sub">Mencari data…</div>`;
-  let j=null,fail=false;
-  try{j=await (await fetch(API+"?plat="+encodeURIComponent(k))).json()}catch(e){fail=true}
-  if(fail){r.innerHTML=`<div class="card empty"><h2>Gagal memuat</h2><p class="sub">Periksa koneksi lalu coba lagi.</p></div>`;return}
-  if(!j||!j.ok){
-    cur=null;
-    const msg=`Halo AfterWork Garage, motor saya belum terdaftar dan ingin servis.\n\nPlat nomor: ${fmt(k)}\nTipe motor: \nTahun motor: \nKM saat ini: \nKeluhan / layanan: ${[...sel].join(", ")}`;
-    r.innerHTML=`<div class="card empty"><div style="font-size:40px">🔍</div><h2>Data belum ada</h2><p class="sub">Plat <b>${esc(fmt(k))}</b> belum tercatat. Servis sekarang dan kirim data motor lewat WhatsApp.</p><a class="btn wa" target="_blank" rel="noopener" href="${wa(msg)}">Servis sekarang via WhatsApp</a></div>`;return}
-  const m=cur=j.motor,rw=[...(j.riwayat||[])].reverse(),st=m.status;
-  r.innerHTML=`<div class="card">${m.foto?`<img class="photo" src="${esc(m.foto)}" alt="Foto motor">`:`<div class="photo">🏍️</div>`}
-  <div class="plate">${esc(m.plat)}</div><div><b>${esc(m.tipe)}</b> · ${esc(m.tahun||"-")}</div>
-  <div class="kv"><div><small>KM terakhir servis</small><b>${m.km?Number(m.km).toLocaleString("id-ID")+" km":"-"}</b></div><div><small>Status</small><b>${st==null?"Tidak ada antrian":STEPS[st]}</b></div></div>
-  ${st==null?"":`<div class="trk">${STEPS.map((s,i)=>`<div class="${i<=st?"d":""} ${i==st?"c":""}">${s}</div>`).join("")}</div>`}
-  <h2 style="margin-top:16px">Riwayat servis</h2>${rw.length?`<div class="tl">${rw.map(h=>`<div><b>${esc(h.s)}</b><br><small>${tgl(h.t)}${h.k?" · "+Number(h.k).toLocaleString("id-ID")+" km":""}${h.c?"<br>"+esc(h.c):""}</small></div>`).join("")}</div>`:`<p class="sub">Belum ada riwayat servis.</p>`}</div>`;
-}
-$("#cek").onclick=lookup;$("#plat").onkeydown=e=>{if(e.key==="Enter")lookup()};
+  // Auto format plat nomor ke huruf besar
+  platInput.addEventListener("input", () => {
+    platInput.value = platInput.value.toUpperCase();
+  });
 
-$("#daftar").onclick=()=>{
-  if(!sel.size){$("#err").textContent="Pilih minimal satu layanan dulu.";return}
-  const m=cur,k=norm($("#plat").value),t=$("#tg").value;
-  const msg=`Halo AfterWork Garage, saya mau daftar antrian servis.\n\nPlat nomor: ${m?m.plat:fmt(k)}\nTipe motor: ${m?m.tipe:""}\nTahun motor: ${m?m.tahun||"":""}\nKM saat ini: ${m&&m.km?m.km:""}\nLayanan: ${[...sel].join(", ")}\nTanggal: ${t?tgl(t):""}\nJam: ${$("#jm").value}`;
-  window.open(wa(msg),"_blank","noopener");
-};
+  platInput.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") searchMotor();
+  });
 
-/* ---------- ADMIN: buka dengan #admin di URL atau ketuk logo 5x ---------- */
-let photo="",taps=0,pin="",am=null,ast=null;const asel=new Set();
-$("#lg").onclick=()=>{if(++taps>=5){taps=0;openAdm()}setTimeout(()=>taps=0,2500)};
-if(location.hash==="#admin")openAdm();
-function openAdm(){
-  pin=sessionStorage.getItem("pin")||prompt("PIN admin")||"";
-  if(!pin)return;
-  sessionStorage.setItem("pin",pin);
-  const a=$("#adm");a.hidden=false;
-  a.innerHTML=`<div class="ah"><b>🔧 Admin AfterWork</b><button class="btn ghost" id="ax">Tutup</button></div>
-  <div class="ab"><div class="card"><h2>Plat nomor</h2><p class="sub">Ketik plat. Kalau sudah ada, data muncul untuk di-update. Kalau belum, isi data motor baru.</p><input id="ap" placeholder="B 1234 XYZ" style="text-transform:uppercase;text-align:center;font-weight:700;letter-spacing:2px"><button class="btn" id="af">Cari / Tambah motor</button></div>
-  <div id="aform"></div><div id="atoast"></div></div>`;
-  $("#ax").onclick=()=>{a.hidden=true;lookup()};
-  $("#af").onclick=afind;
-  $("#ap").onkeydown=e=>{if(e.key==="Enter")afind()};
-}
-function toast(t,ok){const e=$("#atoast");e.className="toast "+(ok?"ok":"bad");e.textContent=t;e.scrollIntoView({block:"nearest"})}
-async function afind(){
-  const k=norm($("#ap").value);if(!k)return toast("Isi plat nomor dulu.");
-  photo="";ast=null;asel.clear();am=null;
-  $("#aform").innerHTML=`<div class="card sub">Mencari…</div>`;
-  let j=null;try{j=await (await fetch(API+"?plat="+encodeURIComponent(k))).json()}catch(e){$("#aform").innerHTML="";return toast("Gagal menghubungi server.")}
-  am=j&&j.ok?j.motor:null;
-  if(am)ast=am.status;else ast=0;
-  const rw=am?[...(j.riwayat||[])].reverse().slice(0,3):[];
-  $("#aform").innerHTML=`<div class="card"><h2>${am?"✏️ Update "+esc(am.plat):"➕ Motor baru "+esc(fmt(k))}</h2>
-  ${am?`<p class="sub">Servis terakhir: ${rw.length?esc(rw[0].s)+" ("+tgl(rw[0].t)+")":"belum ada"} · KM ${am.km||"-"}</p>`:""}
-  <div id="aimg">${am&&am.foto?`<img class="photo" src="${esc(am.foto)}" alt="">`:""}</div>
-  <button class="btn ghost" id="apb">📷 ${am?"Ganti foto motor":"Pilih foto motor"}</button><input type="file" id="afl" accept="image/*" hidden>
-  <div class="row" style="margin-top:12px"><div><small class="sub">Tipe motor</small><input id="fti" placeholder="Beat Esp" value="${am?esc(am.tipe):""}"></div><div><small class="sub">Tahun</small><input id="fth" inputmode="numeric" placeholder="2016" value="${am?esc(am.tahun):""}"></div></div>
-  <small class="sub" style="display:block;margin-top:12px">Status</small><div id="astp">${STEPS.map((s,i)=>`<span class="chip ${i===ast?"on":""}" data-i="${i}">${s}</span>`).join("")}</div>
-  <small class="sub" style="display:block">Servis yang dikerjakan (boleh lebih dari satu)</small><div id="asv">${SVC.map(s=>`<span class="chip" data-n="${s[0]}">${s[0]}</span>`).join("")}</div>
-  <input id="flain" placeholder="Servis lain (opsional)">
-  <div class="row" style="margin-top:12px"><div><small class="sub">KM servis ini</small><input id="fkm" inputmode="numeric" placeholder="${am&&am.km?am.km:"15200"}"></div><div><small class="sub">Tanggal</small><input type="date" id="ftg" value="${new Date().toISOString().slice(0,10)}"></div></div>
-  <input id="fct" placeholder="Catatan (opsional)" style="margin-top:8px">
-  <button class="btn" id="asv2">💾 ${am?"Simpan perubahan":"Daftarkan motor"}</button>
-  ${am?`<button class="btn ghost" id="adel" style="color:#ff6b6b">🗑️ Hapus motor ini</button>`:""}</div>`;
-  $("#apb").onclick=()=>$("#afl").click();
-  $("#afl").onchange=e=>{const f=e.target.files[0];if(!f)return;const im=new Image();im.onload=()=>{const s=480/Math.max(im.width,im.height,480),c=document.createElement("canvas");c.width=im.width*s;c.height=im.height*s;c.getContext("2d").drawImage(im,0,0,c.width,c.height);photo=c.toDataURL("image/jpeg",.7);$("#aimg").innerHTML=`<img class="photo" src="${photo}" alt="">`};im.src=URL.createObjectURL(f)};
-  $("#astp").onclick=e=>{const c=e.target.closest(".chip");if(!c)return;ast=+c.dataset.i;document.querySelectorAll("#astp .chip").forEach(x=>x.classList.toggle("on",x===c))};
-  $("#asv").onclick=e=>{const c=e.target.closest(".chip");if(!c)return;const n=c.dataset.n;asel.has(n)?asel.delete(n):asel.add(n);c.classList.toggle("on")};
-  $("#asv2").onclick=()=>asave(k);
-  if(am)$("#adel").onclick=()=>{if(confirm("Hapus "+am.plat+"? Riwayat tetap ada di tab riwayat Sheet."))apost(k,"hapus",{},"")};
-}
-function asave(k){
-  const v=id=>$(id).value.trim();
-  const f={tipe:v("#fti"),tahun:v("#fth"),km:v("#fkm"),catatan:v("#fct"),tgl:$("#ftg").value,status:ast==null?"":STEPS[ast]};
-  const sv=[...asel,v("#flain")].filter(Boolean).join(", ");if(sv)f.servis=sv;
-  if(!am&&!f.tipe)return toast("Tipe motor wajib diisi.");
-  apost(k,am?"update":"daftar",f,photo);
-}
-async function apost(k,cmd,f,foto){
-  toast("Menyimpan…",true);
-  try{
-    const r=await (await fetch(API,{method:"POST",body:JSON.stringify({pin,cmd,plat:k,f,foto})})).json();
-    toast(r.msg||"Selesai.",r.ok);
-    if(r.msg==="PIN salah.")sessionStorage.removeItem("pin");
-    if(r.ok){if(cmd==="hapus")$("#aform").innerHTML="";else{await afind();toast(r.msg,true)}}
-  }catch(e){toast("Gagal menghubungi server. Cek URL Apps Script dan koneksi.")}
-}
-</script></body></html>
+  btnCari.addEventListener("click", searchMotor);
+
+  async function searchMotor() {
+    const rawVal = platInput.value.trim();
+    const cleanPlat = rawVal.toUpperCase().replace(/[^A-Z0-9]/g, "");
+
+    if (!cleanPlat) {
+      alert("Silakan masukkan nomor plat motor terlebih dahulu.");
+      platInput.focus();
+      return;
+    }
+
+    resultArea.innerHTML = `
+      <div class="card empty-state">
+        <div class="icon">⏳</div>
+        <h2>Mencari Data...</h2>
+        <p class="sub">Mengambil data riwayat &amp; dokumentasi untuk plat ${formatPlat(cleanPlat)}</p>
+      </div>
+    `;
+
+    try {
+      const resp = await fetch(API_URL + "?plat=" + encodeURIComponent(cleanPlat));
+      const data = await resp.json();
+
+      if (data && data.ok && data.riwayat && data.riwayat.length > 0) {
+        renderResults(data, cleanPlat);
+      } else {
+        renderNotFound(cleanPlat);
+      }
+    } catch (err) {
+      console.error(err);
+      renderError();
+    }
+  }
+
+  function renderResults(data, cleanPlat) {
+    const m = data.motor || {};
+    const riwayat = data.riwayat || [];
+
+    let html = `
+      <div class="card">
+        <div class="plate-badge">${escapeHtml(m.plat || formatPlat(cleanPlat))}</div>
+        <div style="font-size: 15px; font-weight: 700; color: #ffffff;">
+          ${escapeHtml(m.pelanggan ? 'Pemilik: ' + m.pelanggan : 'Motor ' + (m.tipe || ''))}
+        </div>
+        ${m.tipe ? `<div style="font-size: 13px; color: var(--mut); margin-top:2px;">Model: ${escapeHtml(m.tipe)}</div>` : ''}
+
+        <h3 style="font-size: 15px; margin-top: 18px; margin-bottom: 8px; color: var(--ac);">
+          📋 Riwayat &amp; File Dokumentasi (${riwayat.length})
+        </h3>
+    `;
+
+    // Render riwayat terbaru paling atas
+    riwayat.reverse().forEach((item, index) => {
+      html += `
+        <div class="history-item">
+          <div class="tag">${escapeHtml(item.s || 'Servis Motor')}</div>
+          <div class="date">📅 Tanggal: ${escapeHtml(item.t || '-')}</div>
+          ${item.c ? `<div class="note">💬 Catatan: ${escapeHtml(item.c)}</div>` : ''}
+
+          ${item.pdfUrl ? `
+            <a href="${escapeHtml(item.pdfUrl)}" target="_blank" rel="noopener" class="btn-pdf">
+              📄 Unduh / Lihat Laporan PDF
+            </a>
+          ` : `
+            <div style="font-size: 12px; color: var(--mut); margin-top: 8px; font-style: italic;">
+              File PDF belum diunggah.
+            </div>
+          `}
+        </div>
+      `;
+    });
+
+    html += `</div>`;
+    resultArea.innerHTML = html;
+  }
+
+  function renderNotFound(plat) {
+    resultArea.innerHTML = `
+      <div class="card empty-state">
+        <div class="icon">🔍</div>
+        <h2>Dokumentasi Belum Ditemukan</h2>
+        <p class="sub">Belum ada riwayat servis / file PDF tersimpan untuk plat <b>${escapeHtml(formatPlat(plat))}</b>.</p>
+      </div>
+    `;
+  }
+
+  function renderError() {
+    resultArea.innerHTML = `
+      <div class="card empty-state">
+        <div class="icon">⚠️</div>
+        <h2>Gagal Terhubung</h2>
+        <p class="sub">Periksa koneksi internet Anda atau pastikan URL Google Apps Script sudah benar.</p>
+      </div>
+    `;
+  }
+
+  function formatPlat(s) {
+    const clean = s.toUpperCase().replace(/[^A-Z0-9]/g, "");
+    const match = clean.match(/^([A-Z]{1,2})(\d{1,4})([A-Z]{0,3})$/);
+    return match ? [match[1], match[2], match[3]].filter(Boolean).join(" ") : clean;
+  }
+
+  function escapeHtml(str) {
+    return String(str ?? '').replace(/[&<>"']/g, c => ({
+      '&': '&amp;',
+      '<': '&lt;',
+      '>': '&gt;',
+      '"': '&quot;',
+      "'": '&#39;'
+    }[c]));
+  }
+</script>
+
+</body>
+</html>
