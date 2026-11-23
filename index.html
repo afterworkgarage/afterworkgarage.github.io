@@ -374,6 +374,67 @@
         font-size: 17px;
       }
     }
+    
+/* Tampilan tanggal dan jam servis */
+.datetime-info {
+  display: flex;
+  align-items: stretch;
+  gap: 10px;
+  margin-top: 2px;
+  flex-wrap: wrap;
+}
+
+.datetime-row {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  flex: 1;
+  min-width: 125px;
+  padding: 10px;
+  background: #f7f8fa;
+  border: 1px solid #edf0f3;
+  border-radius: 10px;
+}
+
+.datetime-icon {
+  width: 32px;
+  height: 32px;
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  background: #ffffff;
+  border: 1px solid #eceef2;
+  border-radius: 9px;
+  font-size: 15px;
+}
+
+.datetime-row small {
+  display: block;
+  font-size: 9px;
+  font-weight: 750;
+  color: #9299a5;
+  letter-spacing: .5px;
+  margin-bottom: 2px;
+}
+
+.datetime-row strong {
+  display: block;
+  color: #303642;
+  font-size: 12px;
+  font-weight: 750;
+  line-height: 1.4;
+}
+
+@media (max-width: 360px) {
+  .datetime-info {
+    flex-direction: column;
+  }
+
+  .datetime-row {
+    width: 100%;
+  }
+}
+
   </style>
 </head>
 
@@ -472,81 +533,191 @@
     }
   }
 
-  function renderResults(data, cleanPlat) {
-    const m = data.motor || {};
-    const riwayat = data.riwayat || [];
+  
+function renderResults(data, cleanPlat) {
+  const m = data.motor || {};
 
-    let html = `
-      <div class="card result-card">
+  // Salin data agar data asli tidak berubah
+  // Urutkan berdasarkan tanggal dan jam terbaru ke terlama
+  const riwayat = [...(data.riwayat || [])].sort((a, b) => {
+    function parseDate(value) {
+      if (!value) return 0;
 
-        <div class="motor-info">
-          <div>
-            <div class="plate-badge">${escapeHtml(m.plat || formatPlat(cleanPlat))}</div>
+      const str = String(value).trim();
 
-            <div class="owner-name">
-              ${escapeHtml(m.pelanggan ? 'Pemilik: ' + m.pelanggan : 'Motor ' + (m.tipe || ''))}
+      // Format tanggal Indonesia: DD/MM/YYYY atau DD-MM-YYYY
+      const match = str.match(
+        /^(\d{1,2})[/-](\d{1,2})[/-](\d{4})(?:\s+(\d{1,2}):(\d{2})(?::(\d{2}))?)?$/
+      );
+
+      if (match) {
+        return new Date(
+          Number(match[3]),
+          Number(match[2]) - 1,
+          Number(match[1]),
+          Number(match[4] || 0),
+          Number(match[5] || 0),
+          Number(match[6] || 0)
+        ).getTime();
+      }
+
+      // Format tanggal lain yang dikenali JavaScript
+      const parsed = new Date(str).getTime();
+      return isNaN(parsed) ? 0 : parsed;
+    }
+
+    return parseDate(b.t) - parseDate(a.t);
+  });
+
+  // Memisahkan tanggal dan jam agar tampil lebih rapi
+  function formatTanggalJam(value) {
+    if (!value) {
+      return { tanggal: "-", jam: "" };
+    }
+
+    const str = String(value).trim();
+
+    const match = str.match(
+      /^(\d{1,2})[/-](\d{1,2})[/-](\d{4})(?:[ T]+(\d{1,2}):(\d{2})(?::(\d{2}))?)?$/
+    );
+
+    let date;
+    let jam = "";
+
+    if (match) {
+      date = new Date(
+        Number(match[3]),
+        Number(match[2]) - 1,
+        Number(match[1])
+      );
+
+      if (match[4] !== undefined) {
+        jam = `${match[4].padStart(2, "0")}:${match[5]}`;
+      }
+    } else {
+      const parsed = new Date(str);
+
+      if (!isNaN(parsed.getTime())) {
+        date = parsed;
+
+        if (/\d{1,2}:\d{2}/.test(str)) {
+          jam = str.match(/\d{1,2}:\d{2}/)[0];
+          const [h, m] = jam.split(":");
+          jam = `${h.padStart(2, "0")}:${m}`;
+        }
+      }
+    }
+
+    if (!date) {
+      return { tanggal: str, jam: "" };
+    }
+
+    const tanggal = new Intl.DateTimeFormat("id-ID", {
+      day: "2-digit",
+      month: "long",
+      year: "numeric"
+    }).format(date);
+
+    return { tanggal, jam };
+  }
+
+  let html = `
+    <div class="card result-card">
+
+      <div class="motor-info">
+        <div>
+          <div class="plate-badge">
+            ${escapeHtml(m.plat || formatPlat(cleanPlat))}
+          </div>
+
+          <div class="owner-name">
+            ${escapeHtml(
+              m.pelanggan
+                ? 'Pemilik: ' + m.pelanggan
+                : 'Motor ' + (m.tipe || '')
+            )}
+          </div>
+
+          ${m.tipe ? `
+            <div class="motor-model">
+              Model: ${escapeHtml(m.tipe)}
             </div>
+          ` : ''}
+        </div>
+      </div>
 
-            ${m.tipe ? `
-              <div class="motor-model">
-                Model: ${escapeHtml(m.tipe)}
+      <div class="section-title">
+        📋 Riwayat Servis
+        <span class="history-count">${riwayat.length} Data</span>
+      </div>
+  `;
+
+  // Riwayat terbaru ditampilkan paling atas
+  riwayat.forEach((item) => {
+    const waktu = formatTanggalJam(item.t);
+
+    html += `
+      <div class="history-item">
+
+        <div class="tag">
+          🔧 ${escapeHtml(item.s || 'Servis Motor')}
+        </div>
+
+        <div class="datetime-info">
+
+          <div class="datetime-row">
+            <span class="datetime-icon">📅</span>
+            <div>
+              <small>TANGGAL SERVIS</small>
+              <strong>${escapeHtml(waktu.tanggal)}</strong>
+            </div>
+          </div>
+
+          ${waktu.jam ? `
+            <div class="datetime-row">
+              <span class="datetime-icon">🕒</span>
+              <div>
+                <small>JAM SERVIS</small>
+                <strong>${escapeHtml(waktu.jam)} WIB</strong>
               </div>
-            ` : ''}
-          </div>
-        </div>
-
-        <div class="section-title">
-          📋 Riwayat Servis
-          <span class="history-count">${riwayat.length} Data</span>
-        </div>
-    `;
-
-    // Render riwayat terbaru paling atas
-    riwayat.reverse().forEach((item, index) => {
-      html += `
-        <div class="history-item">
-
-          <div class="tag">
-            🔧 ${escapeHtml(item.s || 'Servis Motor')}
-          </div>
-
-          <div class="date">
-            📅 Tanggal: ${escapeHtml(item.t || '-')}
-          </div>
-
-          ${item.c ? `
-            <div class="note">
-              💬 Catatan: ${escapeHtml(item.c)}
             </div>
           ` : ''}
 
-          ${item.pdfUrl ? `
-            <a
-              href="${escapeHtml(item.pdfUrl)}"
-              target="_blank"
-              rel="noopener"
-              class="btn-pdf"
-            >
-              📄 Unduh / Lihat Laporan PDF
-            </a>
-          ` : `
-            <div style="
-              font-size: 11px;
-              color: var(--mut);
-              margin-top: 10px;
-              font-style: italic;
-            ">
-              📎 File PDF belum diunggah.
-            </div>
-          `}
-
         </div>
-      `;
-    });
 
-    html += `</div>`;
-    resultArea.innerHTML = html;
-  }
+        ${item.c ? `
+          <div class="note">
+            💬 Catatan: ${escapeHtml(item.c)}
+          </div>
+        ` : ''}
+
+        ${item.pdfUrl ? `
+          <a
+            href="${escapeHtml(item.pdfUrl)}"
+            target="_blank"
+            rel="noopener"
+            class="btn-pdf"
+          >
+            📄 Unduh / Lihat Laporan PDF
+          </a>
+        ` : `
+          <div style="
+            font-size: 11px;
+            color: var(--mut);
+            margin-top: 10px;
+            font-style: italic;
+          ">
+            📎 File PDF belum diunggah.
+          </div>
+        `}
+
+      </div>
+    `;
+  });
+
+  html += `</div>`;
+  resultArea.innerHTML = html;
+}
 
   function renderNotFound(plat) {
     resultArea.innerHTML = `
