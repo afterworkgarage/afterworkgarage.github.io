@@ -1,186 +1,383 @@
+
 <!doctype html>
 <html lang="id">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <title>AfterWork Garage - Lacak Dokumentasi Servis Motor</title>
+  <meta name="theme-color" content="#f7f8fa">
+  <title>AfterWork Garage - Dokumentasi Servis Motor</title>
+
   <style>
     :root {
-      --bg: #121214;
-      --card: #1c1c20;
-      --line: #2b2b31;
-      --tx: #f4f1ea;
-      --mut: #9b99a3;
-      --ac: #ff7a1a;
-      --ok: #3ecf8e;
-      color-scheme: dark;
+      --bg: #f5f6f8;
+      --surface: #ffffff;
+      --surface-soft: #fff8f2;
+      --line: #e9ebef;
+      --tx: #20242c;
+      --mut: #858b98;
+      --ac: #f47721;
+      --ac-dark: #df6415;
+      --blue: #2563eb;
+      --green: #159b68;
+      --shadow: 0 5px 20px rgba(25, 35, 50, .045);
+
+      color-scheme: light;
       box-sizing: border-box;
       padding-top: env(safe-area-inset-top, 0px);
       padding-bottom: env(safe-area-inset-bottom, 0px);
     }
-    html { background: #000; }
-    * { box-sizing: border-box; }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      background: #edf0f4;
+      scroll-behavior: smooth;
+    }
+
     body {
       margin: 0 auto;
+      width: 100%;
       max-width: 480px;
       min-height: 100vh;
       background: var(--bg);
       color: var(--tx);
-      font: 15px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      font: 14px/1.55 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      -webkit-font-smoothing: antialiased;
     }
-    .pad { padding: 16px; }
+
     header {
       display: flex;
       align-items: center;
       gap: 12px;
-      padding: 16px;
+      padding: 18px 18px;
+      background: var(--surface);
       border-bottom: 1px solid var(--line);
+      position: relative;
     }
+
     .logo {
-      width: 44px;
-      height: 44px;
-      border-radius: 12px;
-      background: var(--ac);
+      width: 46px;
+      height: 46px;
+      flex-shrink: 0;
+      border-radius: 14px;
+      background: linear-gradient(145deg, #ff984d, #ef6815);
       display: grid;
       place-items: center;
-      font-size: 22px;
-      user-select: none;
-      box-shadow: 0 4px 12px rgba(255, 122, 26, 0.25);
+      font-size: 23px;
+      box-shadow: 0 5px 12px rgba(244, 119, 33, .2);
     }
-    header b { display: block; font-size: 18px; }
-    header small { color: var(--mut); font-size: 12px; }
+
+    header b {
+      display: block;
+      font-size: 17px;
+      font-weight: 800;
+      letter-spacing: -.4px;
+      color: var(--tx);
+    }
+
+    header small {
+      display: block;
+      color: var(--mut);
+      font-size: 11px;
+      margin-top: 1px;
+    }
+
+    .pad {
+      padding: 18px 16px 24px;
+    }
 
     .card {
-      background: var(--card);
+      background: var(--surface);
       border: 1px solid var(--line);
-      border-radius: 14px;
+      border-radius: 18px;
       padding: 18px;
       margin-bottom: 16px;
+      box-shadow: var(--shadow);
     }
+
     .hero {
-      background: linear-gradient(160deg, #2a1a0d, #1c1c20 65%);
-      border-color: #4a2b12;
+      background: linear-gradient(145deg, #fff8f2, #ffffff 75%);
+      border-color: #f5e5d8;
+      padding: 22px 18px;
     }
-    h2 { font-size: 17px; margin: 0 0 6px; }
-    .sub { color: var(--mut); font-size: 13px; margin: 0 0 14px; }
+
+    .hero-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: #ffebdc;
+      color: #d9681d;
+      padding: 5px 10px;
+      border-radius: 20px;
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: .6px;
+      margin-bottom: 12px;
+    }
+
+    h2 {
+      font-size: 19px;
+      line-height: 1.35;
+      letter-spacing: -.5px;
+      margin: 0 0 7px;
+      font-weight: 800;
+    }
+
+    .sub {
+      color: var(--mut);
+      font-size: 12px;
+      line-height: 1.6;
+      margin: 0 0 17px;
+    }
+
+    label {
+      display: block;
+      color: #555d6a;
+      font-size: 12px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
 
     input#platInput {
       width: 100%;
-      background: #121214;
+      background: #ffffff;
       color: var(--tx);
-      border: 1px solid var(--line);
-      border-radius: 10px;
-      padding: 14px;
-      font-size: 22px;
+      border: 1.5px solid #e2e5eb;
+      border-radius: 13px;
+      padding: 16px 12px;
+      font-size: 23px;
       font-weight: 800;
-      letter-spacing: 2px;
+      letter-spacing: 3px;
       text-transform: uppercase;
       text-align: center;
       font-family: inherit;
-    }
-    input#platInput:focus {
       outline: none;
+      transition: .2s;
+    }
+
+    input#platInput::placeholder {
+      color: #c4c8d0;
+      opacity: 1;
+    }
+
+    input#platInput:focus {
       border-color: var(--ac);
+      box-shadow: 0 0 0 4px rgba(244, 119, 33, .10);
     }
 
     .btn {
       display: block;
       width: 100%;
       border: 0;
-      border-radius: 12px;
-      padding: 14px;
+      border-radius: 13px;
+      padding: 15px;
       font: inherit;
-      font-weight: 700;
-      background: var(--ac);
-      color: #1a0c00;
+      font-weight: 800;
+      font-size: 14px;
+      background: linear-gradient(135deg, #ff923e, #ef6b18);
+      color: #ffffff;
       text-align: center;
-      text-decoration: none;
       cursor: pointer;
-      margin-top: 12px;
-      transition: opacity 0.2s;
+      margin-top: 13px;
+      box-shadow: 0 5px 12px rgba(244, 119, 33, .18);
+      transition: .2s;
     }
-    .btn:active { opacity: 0.85; }
+
+    .btn:active {
+      transform: scale(.98);
+      opacity: .9;
+    }
 
     .btn-pdf {
-      display: inline-flex;
+      display: flex;
       align-items: center;
       justify-content: center;
       gap: 8px;
       width: 100%;
-      background: #2563eb;
-      color: #ffffff;
+      background: #eff5ff;
+      color: #2563eb;
       padding: 12px;
-      border-radius: 10px;
-      font-weight: 700;
-      font-size: 14px;
+      border-radius: 11px;
+      font-weight: 750;
+      font-size: 12px;
       text-decoration: none;
-      margin-top: 10px;
-      border: none;
-      cursor: pointer;
+      margin-top: 12px;
+      border: 1px solid #dce8ff;
+      transition: .2s;
     }
-    .btn-pdf:hover { background: #1d4ed8; }
+
+    .btn-pdf:hover {
+      background: #e3edff;
+    }
+
+    .result-card {
+      padding: 18px;
+    }
+
+    .motor-info {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
 
     .plate-badge {
       display: inline-block;
-      background: #f4f1ea;
-      color: #111;
-      font-weight: 800;
+      background: #252a32;
+      color: #ffffff;
+      font-weight: 850;
       letter-spacing: 2px;
-      padding: 4px 12px;
-      border-radius: 6px;
+      padding: 7px 14px;
+      border-radius: 9px;
       font-size: 20px;
-      margin-bottom: 8px;
+      margin-bottom: 12px;
+      box-shadow: 0 3px 8px rgba(0,0,0,.08);
+    }
+
+    .owner-name {
+      font-size: 14px;
+      font-weight: 800;
+      color: var(--tx);
+    }
+
+    .motor-model {
+      font-size: 12px;
+      color: var(--mut);
+      margin-top: 3px;
+    }
+
+    .section-title {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin: 20px 0 10px;
+      padding-bottom: 11px;
+      border-bottom: 1px solid var(--line);
+      font-size: 14px;
+      font-weight: 800;
+      color: var(--tx);
+    }
+
+    .history-count {
+      background: #fff0e4;
+      color: #df681b;
+      font-size: 11px;
+      padding: 3px 8px;
+      border-radius: 20px;
+      margin-left: auto;
     }
 
     .history-item {
-      background: #121214;
+      background: #ffffff;
       border: 1px solid var(--line);
-      border-radius: 12px;
+      border-radius: 14px;
       padding: 14px;
-      margin-top: 12px;
+      margin-top: 11px;
+      transition: .2s;
     }
+
     .history-item .tag {
-      display: inline-block;
-      background: #2a1a0d;
-      color: var(--ac);
-      border: 1px solid #4a2b12;
-      padding: 3px 8px;
-      border-radius: 6px;
-      font-size: 12px;
-      font-weight: 600;
-      margin-bottom: 6px;
+      display: inline-flex;
+      align-items: center;
+      background: #fff3e9;
+      color: #e36c20;
+      border: 1px solid #ffe2cd;
+      padding: 5px 10px;
+      border-radius: 7px;
+      font-size: 11px;
+      font-weight: 750;
+      margin-bottom: 10px;
     }
+
     .history-item .date {
-      color: var(--mut);
+      color: #777f8d;
       font-size: 12px;
+      font-weight: 550;
     }
+
     .history-item .note {
-      color: #d1d5db;
-      font-size: 13px;
-      margin-top: 6px;
+      color: #555d68;
+      font-size: 12px;
+      line-height: 1.6;
+      margin-top: 9px;
       white-space: pre-wrap;
+      background: #f7f8fa;
+      padding: 10px;
+      border-radius: 9px;
     }
 
     .empty-state {
       text-align: center;
-      padding: 24px 12px;
-      color: var(--mut);
+      padding: 30px 18px;
     }
+
     .empty-state .icon {
-      font-size: 44px;
-      margin-bottom: 8px;
+      width: 65px;
+      height: 65px;
+      border-radius: 20px;
+      background: #fff3e9;
+      display: grid;
+      place-items: center;
+      font-size: 30px;
+      margin: 0 auto 15px;
+    }
+
+    .empty-state h2 {
+      font-size: 16px;
+    }
+
+    .empty-state .sub {
+      margin: 7px 0 0;
+    }
+
+    .loading {
+      animation: pulse 1.3s infinite ease-in-out;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: .45; }
     }
 
     footer {
       text-align: center;
-      color: var(--mut);
-      font-size: 12px;
-      padding: 16px;
+      color: #a0a5af;
+      font-size: 11px;
+      padding: 19px 12px;
       border-top: 1px solid var(--line);
-      margin-top: 20px;
+      background: #ffffff;
+      margin-top: 10px;
+    }
+
+    @media (min-width: 481px) {
+      body {
+        box-shadow: 0 0 35px rgba(20, 30, 45, .07);
+      }
+    }
+
+    @media (max-width: 360px) {
+      .pad {
+        padding: 13px 12px 20px;
+      }
+
+      .card {
+        padding: 15px;
+      }
+
+      input#platInput {
+        font-size: 20px;
+      }
+
+      h2 {
+        font-size: 17px;
+      }
     }
   </style>
 </head>
+
 <body>
 
 <header>
@@ -192,18 +389,37 @@
 </header>
 
 <div class="pad">
+
   <div class="card hero">
+    <div class="hero-label">🏁 DIGITAL SERVICE RECORD</div>
+
     <h2>Lacak Dokumentasi Motor</h2>
-    <p class="sub">Masukkan nomor plat motor untuk melihat riwayat servis &amp; mengunduh laporan PDF.</p>
-    <label for="platInput" style="display:none">Plat Nomor</label>
-    <input id="platInput" placeholder="B 1234 XYZ" autocomplete="off">
-    <button class="btn" id="btnCari">Cari Dokumentasi</button>
+
+    <p class="sub">
+      Masukkan nomor plat motor untuk melihat riwayat servis
+      dan mengunduh laporan PDF.
+    </p>
+
+    <label for="platInput">Nomor Polisi Kendaraan</label>
+
+    <input
+      id="platInput"
+      placeholder="B 1234 XYZ"
+      autocomplete="off"
+    >
+
+    <button class="btn" id="btnCari">
+      🔍 &nbsp; Cari Dokumentasi
+    </button>
   </div>
 
   <div id="resultArea"></div>
+
 </div>
 
-<footer>© AfterWork Garage · Dokumentasi Servis Digital</footer>
+<footer>
+  © AfterWork Garage · Dokumentasi Servis Digital
+</footer>
 
 <script>
   // URL Web App Google Apps Script Anda
@@ -236,7 +452,7 @@
 
     resultArea.innerHTML = `
       <div class="card empty-state">
-        <div class="icon">⏳</div>
+        <div class="icon loading">⏳</div>
         <h2>Mencari Data...</h2>
         <p class="sub">Mengambil data riwayat &amp; dokumentasi untuk plat ${formatPlat(cleanPlat)}</p>
       </div>
@@ -262,35 +478,69 @@
     const riwayat = data.riwayat || [];
 
     let html = `
-      <div class="card">
-        <div class="plate-badge">${escapeHtml(m.plat || formatPlat(cleanPlat))}</div>
-        <div style="font-size: 15px; font-weight: 700; color: #ffffff;">
-          ${escapeHtml(m.pelanggan ? 'Pemilik: ' + m.pelanggan : 'Motor ' + (m.tipe || ''))}
-        </div>
-        ${m.tipe ? `<div style="font-size: 13px; color: var(--mut); margin-top:2px;">Model: ${escapeHtml(m.tipe)}</div>` : ''}
+      <div class="card result-card">
 
-        <h3 style="font-size: 15px; margin-top: 18px; margin-bottom: 8px; color: var(--ac);">
-          📋 Riwayat &amp; File Dokumentasi (${riwayat.length})
-        </h3>
+        <div class="motor-info">
+          <div>
+            <div class="plate-badge">${escapeHtml(m.plat || formatPlat(cleanPlat))}</div>
+
+            <div class="owner-name">
+              ${escapeHtml(m.pelanggan ? 'Pemilik: ' + m.pelanggan : 'Motor ' + (m.tipe || ''))}
+            </div>
+
+            ${m.tipe ? `
+              <div class="motor-model">
+                Model: ${escapeHtml(m.tipe)}
+              </div>
+            ` : ''}
+          </div>
+        </div>
+
+        <div class="section-title">
+          📋 Riwayat Servis
+          <span class="history-count">${riwayat.length} Data</span>
+        </div>
     `;
 
     // Render riwayat terbaru paling atas
     riwayat.reverse().forEach((item, index) => {
       html += `
         <div class="history-item">
-          <div class="tag">${escapeHtml(item.s || 'Servis Motor')}</div>
-          <div class="date">📅 Tanggal: ${escapeHtml(item.t || '-')}</div>
-          ${item.c ? `<div class="note">💬 Catatan: ${escapeHtml(item.c)}</div>` : ''}
+
+          <div class="tag">
+            🔧 ${escapeHtml(item.s || 'Servis Motor')}
+          </div>
+
+          <div class="date">
+            📅 Tanggal: ${escapeHtml(item.t || '-')}
+          </div>
+
+          ${item.c ? `
+            <div class="note">
+              💬 Catatan: ${escapeHtml(item.c)}
+            </div>
+          ` : ''}
 
           ${item.pdfUrl ? `
-            <a href="${escapeHtml(item.pdfUrl)}" target="_blank" rel="noopener" class="btn-pdf">
+            <a
+              href="${escapeHtml(item.pdfUrl)}"
+              target="_blank"
+              rel="noopener"
+              class="btn-pdf"
+            >
               📄 Unduh / Lihat Laporan PDF
             </a>
           ` : `
-            <div style="font-size: 12px; color: var(--mut); margin-top: 8px; font-style: italic;">
-              File PDF belum diunggah.
+            <div style="
+              font-size: 11px;
+              color: var(--mut);
+              margin-top: 10px;
+              font-style: italic;
+            ">
+              📎 File PDF belum diunggah.
             </div>
           `}
+
         </div>
       `;
     });
@@ -303,8 +553,13 @@
     resultArea.innerHTML = `
       <div class="card empty-state">
         <div class="icon">🔍</div>
+
         <h2>Dokumentasi Belum Ditemukan</h2>
-        <p class="sub">Belum ada riwayat servis / file PDF tersimpan untuk plat <b>${escapeHtml(formatPlat(plat))}</b>.</p>
+
+        <p class="sub">
+          Belum ada riwayat servis / file PDF tersimpan
+          untuk plat <b>${escapeHtml(formatPlat(plat))}</b>.
+        </p>
       </div>
     `;
   }
@@ -313,8 +568,13 @@
     resultArea.innerHTML = `
       <div class="card empty-state">
         <div class="icon">⚠️</div>
+
         <h2>Gagal Terhubung</h2>
-        <p class="sub">Periksa koneksi internet Anda atau pastikan URL Google Apps Script sudah benar.</p>
+
+        <p class="sub">
+          Periksa koneksi internet Anda atau pastikan
+          URL Google Apps Script sudah benar.
+        </p>
       </div>
     `;
   }
