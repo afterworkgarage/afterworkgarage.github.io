@@ -521,7 +521,8 @@
     try {
       const resp = await fetch(API_URL + "?plat=" + encodeURIComponent(cleanPlat));
       const data = await resp.json();
-
+      console.log("DATA RIWAYAT ASLI:", data.riwayat);
+      
       if (data && data.ok && data.riwayat && data.riwayat.length > 0) {
         renderResults(data, cleanPlat);
       } else {
